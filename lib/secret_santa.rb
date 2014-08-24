@@ -20,32 +20,46 @@ class SecretSanta
 		# same = list.detect{|last_name| list.count(last_name) > 1}
 		last_name = list.group_by { |h| h["LAST_NAME"] }.values.select { |a| a.size > 1}.flatten
 		return false if last_name.empty?
-		last_name
+		list
 	end
 
 	def move_names(list)
 		last_names = same_last_name?(list)
 
-		unless last_names == false
-		  odd_names = last_names.select.each_with_index { |hash, position| position.odd? } 
-		  even_names = last_names.select.each_with_index {|hash, position| position.even? }
-		
-		  odd_names.each do |hash|
-			  list.unshift(hash)
-		  end
+		return list if last_names == false
+			shuffled_list = list.shuffle
+			shuffled_list
+ 		end
 
-		  even_names.each do |hash|
-			  list << hash
-		  end
-		 end
- 		list.uniq
+	def in_a_row?(list)
+		list_of_names = move_names(list)
+
+		list_of_names.each_cons(2) do |hash, next_hash|
+			return true if hash["LAST_NAME"] == next_hash["LAST_NAME"]
+		end 
+		list_of_names
 	end
 
-	def shuffle_people(list)
-		list.shuffle
+	def assign_santa(list)
+		in_a_row = in_a_row?(list)
+
+		unless in_a_row == true
+			in_a_row.each_cons(2) do |hash, next_hash|
+				puts "#{hash["FIRST_NAME"]} is Secret Santa to #{next_hash["FIRST_NAME"]}"
+			end
+			first_name = in_a_row[0]
+			last_name = in_a_row[-1]
+			puts "#{last_name["FIRST_NAME"]} is Secret Santa to #{first_name["FIRST_NAME"]}"
+		end
+		true
 	end
+
+
 end
 
 secret_santa = SecretSanta.new
-secret_santa.same_last_name?(secret_santa.open)
-secret_santa.move_names(secret_santa.open)
+# secret_santa.same_last_name?(secret_santa.open)
+# secret_santa.in_a_row?(secret_santa.open)
+secret_santa.assign_santa(secret_santa.open)
+
+
