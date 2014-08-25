@@ -46,4 +46,15 @@ describe SecretSanta do
 	it "assigns a santa if there are no family members" do
 		expect(@secret_santa.assign_santa(santa_list)).to be true
 	end
+
+	it "assigns a santa if there are families" do
+		family_list = [ {"FIRST_NAME"=>"Albus", "LAST_NAME"=>"Dumbledore", "EMAIL"=>"<adumbledore@hogwarts.org>"}, 
+										{"FIRST_NAME"=>"Harry", "LAST_NAME"=>"Granger", "EMAIL"=>"<hpotter@hogwarts.org>"}, 
+										{"FIRST_NAME"=>"Ron", "LAST_NAME"=>"Weasley", "EMAIL"=>"<rweasly@hogwarts.org>"}, 
+										{"FIRST_NAME"=>"Hermione", "LAST_NAME"=>"Granger", "EMAIL"=>"<hgranger@hogwarts.org>"}, 
+										{"FIRST_NAME"=>"Draco", "LAST_NAME"=>"Malfoy", "EMAIL"=>"<dmalfoy@hogwarts.org>"},
+										{"FIRST_NAME"=>"Severus", "LAST_NAME"=>"Snape", "EMAIL"=>"<dmalfoy@hogwarts.org>"} ]
+    expect(@secret_santa.shuffle_and_assign(family_list)).to be true
+	end	
+
 end

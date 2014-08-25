@@ -54,6 +54,15 @@ class SecretSanta
 		true
 	end
 
+	def shuffle_and_assign(list)
+		in_a_row = in_a_row?(list)
+		list_of_names = move_names(list)
+
+		while in_a_row == true
+			list_of_names
+		end
+		return true
+	end
 
 end
 
