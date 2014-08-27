@@ -4,14 +4,11 @@ class SecretSanta
 	attr_reader :santa_list
 
 	def open
-		f = File.open("/Users/administrator/Desktop/Personal/8th_Light/Apprenticeship/secret_santa/lib/example.csv")
-		csv_data = CSV.read '/Users/administrator/Desktop/Personal/8th_Light/Apprenticeship/secret_santa/lib/example.csv'
+		f = File.open("example.csv")
+		csv_data = CSV.read 'example.csv'
 		headers = csv_data.shift.map {|i| i.to_s }
 		string_data = csv_data.map {|row| row.map {|cell| cell.to_s} }
 		hash_names = string_data.map {|row| Hash[*headers.zip(row).flatten] }
-		# CSV.foreach('example.csv', :headers => true) do |csv_obj|
-		# 	p csv_obj
-		# end
 		hash_names
 	end
 
@@ -51,7 +48,6 @@ class SecretSanta
 end
 
 # secret_santa = SecretSanta.new
-# secret_santa.assign_santa(secret_santa.open)
-# secret_santa.refine_pairs(assign_santa(secret_santa.open))
+# secret_santa.matching_pairs?(secret_santa.refine_pairs(secret_santa.assign_santa(secret_santa.open)))
 
 
