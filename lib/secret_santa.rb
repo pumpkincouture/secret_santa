@@ -14,44 +14,37 @@ class SecretSanta
 
 	def assign_santa(list)
 
-		pairs = []
+		doubles = []
 			
 			list.each do |hash|
-			potential = [hash["FIRST_NAME"] + " " + hash["LAST_NAME"]]
-			pairs << potential
+			  potential = [hash["FIRST_NAME"] + " " + hash["LAST_NAME"]]
+			  doubles << potential
 			end
 
-			pairs.each do |array|
-						random_array = list[rand]
-						first_name = random_array["FIRST_NAME"]
-						last_name = random_array["LAST_NAME"]
-						name = ""
-						name += first_name + " "
-						name += last_name
-
-				array << name
+			shuffled_list = list.shuffle
+			santas = []
+			
+			shuffled_list.each do |hash|
+			  others = hash["FIRST_NAME"] + " " + hash["LAST_NAME"]
+			  santas << others
 			end
 
-		p pairs
-	end
+			santas.reverse!
 
-	def refine_pairs(list)
+			number = santas.length - 1
 
-		new_sentence = []
-
-	  list.each do |sub_array|
-		  sub_array.each do |sentence|
-				  split = sentence.split(" ")
-				  new_sentence << split
+			doubles.each do |array|
+			  name = santas[number]
+			  array << name
+			  number -= 1
 			end
-		end
-		new_sentence
+	  p doubles
 	end
 
 	def matching_pairs?(list)
 
 		list.each do |array|
-		  return true if array[1] == array[4]
+			return true if array[0][-1] == array[1][-1]
 		end
 		false
 	end
@@ -92,9 +85,9 @@ class SecretSanta
 	end
 end
 
-secret_santa = SecretSanta.new
-secret_santa.open
-secret_santa.assign_santa(secret_santa.open)
+# secret_santa = SecretSanta.new
+# secret_santa.open
+# secret_santa.assign_santa(secret_santa.open)
 # secret_santa.refine_pairs(secret_santa.assign_santa(secret_santa.open))
 # secret_santa.matching_pairs?(secret_santa.refine_pairs(secret_santa.assign_santa(secret_santa.open)))
 # secret_santa.shuffle_list(secret_santa.refine_pairs(secret_santa.assign_santa(secret_santa.open)))

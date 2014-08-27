@@ -32,52 +32,24 @@ describe SecretSanta do
 										 "EMAIL"=>"<hgranger@hogwarts.org>"}, 
 										{"FIRST_NAME"=>"Draco", "LAST_NAME"=>"Malfoy", 
 										 "EMAIL"=>"<dmalfoy@hogwarts.org>"} ]
-
-		paired_list = [["Albus Dumbledore + Harry Potter"], 
-									 ["Harry Potter + Ron Weasley"], 
-									 ["Ron Weasley + Hermione Granger"], 
-									 ["Hermione Granger + Draco Malfoy"], 
-									 ["Draco Malfoy + Albus Dumbledore"]]
-
-		strings_list = [["Albus", "Dumbledore", "+", "Harry", "Potter"], 
-									  ["Harry", "Potter", "+", "Ron", "Weasley"], 
-									  ["Ron", "Weasley", "+", "Hermione", "Granger"], 
-									  ["Hermione", "Granger", "+", "Draco", "Malfoy"], 
-									  ["Draco", "Malfoy", "+", "Albus", "Dumbledore"]]
-		expect(@secret_santa.assign_santa(family_list)).to eq(paired_list)
-	end	
-
-	it "splits the list into strings within sub_arrays" do
-		paired_list = [["Albus Dumbledore + Harry Potter"], 
-									 ["Harry Potter + Ron Weasley"], 
-									 ["Ron Weasley + Hermione Granger"], 
-									 ["Hermione Granger + Draco Malfoy"], 
-									 ["Draco Malfoy + Albus Dumbledore"]]
-
-		strings_list = [["Albus", "Dumbledore", "+", "Harry", "Potter"], 
-									  ["Harry", "Potter", "+", "Ron", "Weasley"], 
-									  ["Ron", "Weasley", "+", "Hermione", "Granger"], 
-									  ["Hermione", "Granger", "+", "Draco", "Malfoy"], 
-									  ["Draco", "Malfoy", "+", "Albus", "Dumbledore"]]
-		expect(@secret_santa.refine_pairs(paired_list)).to eq(strings_list)
+		expect(@secret_santa.assign_santa(family_list)).to_not eq(family_list)
 	end		
 
 	it "checks the hash to see if there are any matching pairs" do
-		strings_list = 	[["Albus", "Dumbledore", "+", "Harry", "Dumbledore"], 
-										["Harry", "Dumbledore", "+", "Ron", "Weasley"], 
-										["Ron", "Weasley", "+", "Hermione", "Granger"], 
-										["Hermione", "Granger", "+", "Draco", "Malfoy"], 
-										["Draco", "Malfoy", "+", "Albus", "Dumbledore"]]	
-		expect(@secret_santa.matching_pairs?(strings_list)).to be true
+		paired_list = [["Albus Dumbledore", "Draco Malfoy"], 
+									 ["Harry Dumbledore", "Albus Dumbledore"], 
+									 ["Ron Weasley", "Hermione Granger"], 
+									 ["Hermione Granger", "Ron Weasley"], 
+									 ["Draco Malfoy", "Harry Dumbledore"]]	
+		expect(@secret_santa.matching_pairs?(paired_list)).to be true
 	end
 
 	it "shuffles pairs" do
-		strings_list = 	[["Albus", "Dumbledore", "+", "Harry", "Dumbledore"], 
-										["Harry", "Dumbledore", "+", "Ron", "Weasley"], 
-										["Ron", "Weasley", "+", "Hermione", "Granger"], 
-										["Hermione", "Granger", "+", "Draco", "Malfoy"], 
-										["Tom", "Sawyer", "+", "Albus", "Dumbledore"]]		
-
-	expect(@secret_santa.shuffle_list(strings_list)).to_not eq(strings_list)
+		paired_list = [["Albus Dumbledore", "Draco Malfoy"], 
+									 ["Harry Dumbledore", "Albus Dumbledore"], 
+									 ["Ron Weasley", "Hermione Granger"], 
+									 ["Hermione Granger", "Ron Weasley"], 
+									 ["Draco Malfoy", "Harry Dumbledore"]]
+	expect(@secret_santa.shuffle_list(paired_list)).to_not eq(paired_list)
 	end
 end
