@@ -2,11 +2,16 @@ require_relative '../lib/secret_santa.rb'
 require_relative 'spec_helper.rb'
 
 describe SecretSanta do 
-	let (:santa_list)  { [ {"FIRST_NAME"=>"Albus", "LAST_NAME"=>"Dumbledore", "EMAIL"=>"<adumbledore@hogwarts.org>"}, 
-											   {"FIRST_NAME"=>"Harry", "LAST_NAME"=>"Potter", "EMAIL"=>"<hpotter@hogwarts.org>"}, 
-											   {"FIRST_NAME"=>"Ron", "LAST_NAME"=>"Weasley", "EMAIL"=>"<rweasly@hogwarts.org>"}, 
-											   {"FIRST_NAME"=>"Hermione", "LAST_NAME"=>"Granger", "EMAIL"=>"<hgranger@hogwarts.org>"}, 
-											   {"FIRST_NAME"=>"Draco", "LAST_NAME"=>"Malfoy", "EMAIL"=>"<dmalfoy@hogwarts.org>"} ] }
+	let (:santa_list)  { [ {"FIRST_NAME"=>"Albus", "LAST_NAME"=>"Dumbledore", 
+	  								      "EMAIL"=>"<adumbledore@hogwarts.org>"}, 
+										     {"FIRST_NAME"=>"Harry", "LAST_NAME"=>"Potter", 
+										      "EMAIL"=>"<hpotter@hogwarts.org>"}, 
+										     {"FIRST_NAME"=>"Ron", "LAST_NAME"=>"Weasley", 
+										      "EMAIL"=>"<rweasly@hogwarts.org>"}, 
+										     {"FIRST_NAME"=>"Hermione", "LAST_NAME"=>"Granger", 
+										      "EMAIL"=>"<hgranger@hogwarts.org>"}, 
+										     {"FIRST_NAME"=>"Draco", "LAST_NAME"=>"Malfoy", 
+										      "EMAIL"=>"<dmalfoy@hogwarts.org>"} ] }
 	
 	before :each do
 		@secret_santa = SecretSanta.new
@@ -16,45 +21,53 @@ describe SecretSanta do
 		expect(@secret_santa.open).to eq(santa_list)
 	end
 
-	it "checks same last name" do
-		expect(@secret_santa.same_last_name?(santa_list)).to be false
-	end
+	it "accepts a list and assigns pairs" do
+		family_list = [ {"FIRST_NAME"=>"Albus", "LAST_NAME"=>"Dumbledore", 
+	  								 "EMAIL"=>"<adumbledore@hogwarts.org>"}, 
+										{"FIRST_NAME"=>"Harry", "LAST_NAME"=>"Potter", 
+										 "EMAIL"=>"<hpotter@hogwarts.org>"}, 
+										{"FIRST_NAME"=>"Ron", "LAST_NAME"=>"Weasley", 
+										 "EMAIL"=>"<rweasly@hogwarts.org>"}, 
+										{"FIRST_NAME"=>"Hermione", "LAST_NAME"=>"Granger", 
+										 "EMAIL"=>"<hgranger@hogwarts.org>"}, 
+										{"FIRST_NAME"=>"Draco", "LAST_NAME"=>"Malfoy", 
+										 "EMAIL"=>"<dmalfoy@hogwarts.org>"} ]
 
-	it "checks if there are matching names" do
-		santa_list = [ {"FIRST_NAME"=>"Albus", "LAST_NAME"=>"Dumbledore", "EMAIL"=>"<adumbledore@hogwarts.org>"}, 
-										 {"FIRST_NAME"=>"Harry", "LAST_NAME"=>"Potter", "EMAIL"=>"<hpotter@hogwarts.org>"}, 
-										 {"FIRST_NAME"=>"Ron", "LAST_NAME"=>"Weasley", "EMAIL"=>"<rweasly@hogwarts.org>"}, 
-										 {"FIRST_NAME"=>"Hermione", "LAST_NAME"=>"Granger", "EMAIL"=>"<hgranger@hogwarts.org>"}, 
-										 {"FIRST_NAME"=>"Draco", "LAST_NAME"=>"Malfoy", "EMAIL"=>"<dmalfoy@hogwarts.org>"} ]
-		expect(@secret_santa.same_last_name?(santa_list)).to be false
-	end
+		paired_list = [["Albus Dumbledore + Harry Potter"], 
+									 ["Harry Potter + Ron Weasley"], 
+									 ["Ron Weasley + Hermione Granger"], 
+									 ["Hermione Granger + Draco Malfoy"], 
+									 ["Draco Malfoy + Albus Dumbledore"]]
 
-	it "returns shuffled list" do
-		family_list = [ {"FIRST_NAME"=>"Albus", "LAST_NAME"=>"Dumbledore", "EMAIL"=>"<adumbledore@hogwarts.org>"}, 
-										{"FIRST_NAME"=>"Harry", "LAST_NAME"=>"Potter", "EMAIL"=>"<hpotter@hogwarts.org>"}, 
-										{"FIRST_NAME"=>"Ron", "LAST_NAME"=>"Weasley", "EMAIL"=>"<rweasly@hogwarts.org>"}, 
-										{"FIRST_NAME"=>"Hermione", "LAST_NAME"=>"Granger", "EMAIL"=>"<hgranger@hogwarts.org>"}, 
-										{"FIRST_NAME"=>"Draco", "LAST_NAME"=>"Granger", "EMAIL"=>"<dmalfoy@hogwarts.org>"} ]
-		new_list = family_list.shuffle
-		expect(@secret_santa.move_names(family_list)).to_not eq(family_list)
-	end
-
-	it "returns the list if there is no same last name" do
-		expect(@secret_santa.move_names(santa_list)).to eq(santa_list)
-	end
-
-	it "assigns a santa if there are no family members" do
-		expect(@secret_santa.assign_santa(santa_list)).to be true
-	end
-
-	it "assigns a santa if there are families" do
-		family_list = [ {"FIRST_NAME"=>"Albus", "LAST_NAME"=>"Dumbledore", "EMAIL"=>"<adumbledore@hogwarts.org>"}, 
-										{"FIRST_NAME"=>"Harry", "LAST_NAME"=>"Granger", "EMAIL"=>"<hpotter@hogwarts.org>"}, 
-										{"FIRST_NAME"=>"Ron", "LAST_NAME"=>"Weasley", "EMAIL"=>"<rweasly@hogwarts.org>"}, 
-										{"FIRST_NAME"=>"Hermione", "LAST_NAME"=>"Granger", "EMAIL"=>"<hgranger@hogwarts.org>"}, 
-										{"FIRST_NAME"=>"Draco", "LAST_NAME"=>"Malfoy", "EMAIL"=>"<dmalfoy@hogwarts.org>"},
-										{"FIRST_NAME"=>"Severus", "LAST_NAME"=>"Snape", "EMAIL"=>"<dmalfoy@hogwarts.org>"} ]
-    expect(@secret_santa.shuffle_and_assign(family_list)).to be true
+		strings_list = [["Albus", "Dumbledore", "+", "Harry", "Potter"], 
+									  ["Harry", "Potter", "+", "Ron", "Weasley"], 
+									  ["Ron", "Weasley", "+", "Hermione", "Granger"], 
+									  ["Hermione", "Granger", "+", "Draco", "Malfoy"], 
+									  ["Draco", "Malfoy", "+", "Albus", "Dumbledore"]]
+		expect(@secret_santa.assign_santa(family_list)).to eq(paired_list)
 	end	
 
+	it "splits the list into strings within sub_arrays" do
+		paired_list = [["Albus Dumbledore + Harry Potter"], 
+									 ["Harry Potter + Ron Weasley"], 
+									 ["Ron Weasley + Hermione Granger"], 
+									 ["Hermione Granger + Draco Malfoy"], 
+									 ["Draco Malfoy + Albus Dumbledore"]]
+
+		strings_list = [["Albus", "Dumbledore", "+", "Harry", "Potter"], 
+									  ["Harry", "Potter", "+", "Ron", "Weasley"], 
+									  ["Ron", "Weasley", "+", "Hermione", "Granger"], 
+									  ["Hermione", "Granger", "+", "Draco", "Malfoy"], 
+									  ["Draco", "Malfoy", "+", "Albus", "Dumbledore"]]
+		expect(@secret_santa.refine_pairs(paired_list)).to eq(strings_list)
+	end		
+
+	it "checks the hash to see if there are any matching pairs" do
+		strings_list = 	[["Albus", "Dumbledore", "+", "Harry", "Dumbledore"], 
+										["Harry", "Dumbledore", "+", "Ron", "Weasley"], 
+										["Ron", "Weasley", "+", "Hermione", "Granger"], 
+										["Hermione", "Granger", "+", "Draco", "Malfoy"], 
+										["Draco", "Malfoy", "+", "Albus", "Dumbledore"]]	
+		expect(@secret_santa.matching_pairs?(strings_list)).to be true
+	end
 end

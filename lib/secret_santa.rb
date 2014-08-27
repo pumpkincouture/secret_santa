@@ -15,60 +15,43 @@ class SecretSanta
 		hash_names
 	end
 
-	def same_last_name?(list)
-		# last_name = list.select{|list| list["LAST_NAME"].length > 9 }
-		# same = list.detect{|last_name| list.count(last_name) > 1}
-		last_name = list.group_by { |h| h["LAST_NAME"] }.values.select { |a| a.size > 1}.flatten
-		return false if last_name.empty?
-		list
-	end
-
-	def move_names(list)
-		last_names = same_last_name?(list)
-
-		return list if last_names == false
-			shuffled_list = list.shuffle
-			shuffled_list
- 		end
-
-	def in_a_row?(list)
-		list_of_names = move_names(list)
-
-		list_of_names.each_cons(2) do |hash, next_hash|
-			return true if hash["LAST_NAME"] == next_hash["LAST_NAME"]
-		end 
-		list_of_names
-	end
-
 	def assign_santa(list)
-		in_a_row = in_a_row?(list)
+			pairs = []
 
-		unless in_a_row == true
-			in_a_row.each_cons(2) do |hash, next_hash|
-				puts "#{hash["FIRST_NAME"]} is Secret Santa to #{next_hash["FIRST_NAME"]}"
+			list.each_cons(2) do |hash, next_hash|
+			  pairs << [hash["FIRST_NAME"] + " " + hash["LAST_NAME"] + " + " + next_hash["FIRST_NAME"] + " " + next_hash["LAST_NAME"]] 
 			end
-			first_name = in_a_row[0]
-			last_name = in_a_row[-1]
-			puts "#{last_name["FIRST_NAME"]} is Secret Santa to #{first_name["FIRST_NAME"]}"
-		end
-		true
+			first_name = list[0]
+			last_name = list[-1]
+			pairs << [last_name["FIRST_NAME"] + " " + last_name["LAST_NAME"] + " + " + first_name["FIRST_NAME"] + " " + first_name["LAST_NAME"]] 
+		pairs
 	end
 
-	def shuffle_and_assign(list)
-		in_a_row = in_a_row?(list)
-		list_of_names = move_names(list)
+	def refine_pairs(list)
 
-		while in_a_row == true
-			list_of_names
+		new_sentence = []
+
+	  list.each do |sub_array|
+		  sub_array.each do |sentence|
+				  split = sentence.split(" ")
+				  new_sentence << split
+			end
 		end
-		return true
+		new_sentence
 	end
 
+	def matching_pairs?(list)
+
+		list.each do |array|
+				return true if array[1] == array[4]
+		end
+		false
+	end
+	
 end
 
-secret_santa = SecretSanta.new
-# secret_santa.same_last_name?(secret_santa.open)
-# secret_santa.in_a_row?(secret_santa.open)
-secret_santa.assign_santa(secret_santa.open)
+# secret_santa = SecretSanta.new
+# secret_santa.assign_santa(secret_santa.open)
+# secret_santa.refine_pairs(assign_santa(secret_santa.open))
 
 
