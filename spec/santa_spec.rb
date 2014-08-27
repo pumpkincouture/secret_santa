@@ -17,7 +17,7 @@ describe SecretSanta do
 		@secret_santa = SecretSanta.new
 	end
 
-	it "returns hash data" do
+	pending "returns hash data" do
 		expect(@secret_santa.open).to eq(santa_list)
 	end
 
@@ -69,5 +69,15 @@ describe SecretSanta do
 										["Hermione", "Granger", "+", "Draco", "Malfoy"], 
 										["Draco", "Malfoy", "+", "Albus", "Dumbledore"]]	
 		expect(@secret_santa.matching_pairs?(strings_list)).to be true
+	end
+
+	it "shuffles pairs" do
+		strings_list = 	[["Albus", "Dumbledore", "+", "Harry", "Dumbledore"], 
+										["Harry", "Dumbledore", "+", "Ron", "Weasley"], 
+										["Ron", "Weasley", "+", "Hermione", "Granger"], 
+										["Hermione", "Granger", "+", "Draco", "Malfoy"], 
+										["Tom", "Sawyer", "+", "Albus", "Dumbledore"]]		
+
+	expect(@secret_santa.shuffle_list(strings_list)).to_not eq(strings_list)
 	end
 end
