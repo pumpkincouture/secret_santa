@@ -36,12 +36,13 @@ class SecretSanta
 			doubles.each do |array|
 			  name = santas[number]
 			  array << name
+			  santas.delete(name)
 			  number -= 1
 			end
-	  p doubles
+	  doubles
 	end
 
-	def matching_pairs?(list)
+  def matching_pairs?(list)
 
 		list.each do |array|
 			return true if array[0][-1] == array[1][-1]
@@ -52,22 +53,22 @@ class SecretSanta
 	def shuffle_list(refined_list)
 		random_list = refined_list.shuffle
 		random_array = random_list[rand]
-		first_name = random_array[3]
-		last_name = random_array[4]
+		first_name = random_array[0]
+		last_name = random_array[-1]
 		original_first = ""
 		original_last = ""
 		swap_first = ""
 		swap_last = ""
+
 		refined_list.each do |array|
-			if array[1] == array[4]
-					# p array[3]
-					# p first_name
-					array[3], first_name = first_name, array[3]
-					array[4], last_name = last_name, array[4]
+			if array[0] == array[0]
+					p array[0]
+					array[1][0], first_name = first_name, array[1][0]
+					array[1][-1], last_name = last_name, array[1][-1]
 					original_first += first_name
 					original_last += last_name
-					swap_first += array[3]
-					swap_last += array[4]
+					swap_first += array[1][0]
+					swap_last += array[1][-1]
 					# p swap_first
 					# p swap_last
 			elsif array[3] == swap_first
