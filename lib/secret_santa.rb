@@ -1,95 +1,37 @@
 require 'csv'
+require_relative 'person.rb'
 
 class SecretSanta
-	attr_reader :santa_list
+	attr_reader :santa_list, :santa_shuffled, :people
 
-	def open
-		f = File.open("example.csv")
-		csv_data = CSV.read 'example.csv'
-		headers = csv_data.shift.map {|i| i.to_s }
-		string_data = csv_data.map {|row| row.map {|cell| cell.to_s} }
-		hash_names = string_data.map {|row| Hash[*headers.zip(row).flatten] }
-		hash_names
+	def initialize
+		@santa_list = santa_list
+		@santa_shuffled = santa_shuffled
+		@people = people
 	end
 
-	def assign_santa(list)
-
-		doubles = []
-			
-			list.each do |hash|
-			  potential = [hash["FIRST_NAME"] + " " + hash["LAST_NAME"]]
-			  doubles << potential
-			end
-
-			shuffled_list = list.shuffle
-			santas = []
-			
-			shuffled_list.each do |hash|
-			  others = hash["FIRST_NAME"] + " " + hash["LAST_NAME"]
-			  santas << others
-			end
-
-			santas.reverse!
-
-			number = santas.length - 1
-
-			doubles.each do |array|
-			  name = santas[number]
-			  array << name
-			  santas.delete(name)
-			  number -= 1
-			end
-	  doubles
-	end
-
-  def matching_pairs?(list)
-
-		list.each do |array|
-			return true if array[0][-1] == array[1][-1]
+	def people_list
+		people_list = []
+		csv_data = CSV.foreach('./lib/example.csv') do |row|
+			@people = Person.new(row) 
+			people_list << @people
 		end
-		false
+		@santa_list = people_list
+		@santa_list
 	end
 
-	def shuffle_list(refined_list)
-		random_list = refined_list.shuffle
-		random_array = random_list[rand]
-		first_name = random_array[0]
-		last_name = random_array[-1]
-		original_first = ""
-		original_last = ""
-		swap_first = ""
-		swap_last = ""
+	def random_list
+		duplicate_list = @santa_list.clone
+		@santa_shuffled = duplicate_list.sort_by { rand }
+		@santa_shuffled
+	end
 
-		refined_list.each do |array|
-			if array[0] == array[0]
-					p array[0]
-					array[1][0], first_name = first_name, array[1][0]
-					array[1][-1], last_name = last_name, array[1][-1]
-					original_first += first_name
-					original_last += last_name
-					swap_first += array[1][0]
-					swap_last += array[1][-1]
-					# p swap_first
-					# p swap_last
-			elsif array[3] == swap_first
-					array[3] = original_first
-					array[4] = original_last
-			else
-				 refined_list
-			end
-		
-					# array[4], last_name = last_name, array[4]
-			# else
-			# 	 array[3], first_name = first_name, array[3]
+	def assign_random_santa
+		number = @santa_shuffled.length - 1
+		@santa_list.each do |person|
+			potential_partner = @santa_shuffled[ rand ]
+			person.assigned_santa = potential_partner if @people.not_assigned(potential_partner)
+			@santa_shuffled.delete(potential_partner)
 		end
-		 refined_list
 	end
 end
-
-# secret_santa = SecretSanta.new
-# secret_santa.open
-# secret_santa.assign_santa(secret_santa.open)
-# secret_santa.refine_pairs(secret_santa.assign_santa(secret_santa.open))
-# secret_santa.matching_pairs?(secret_santa.refine_pairs(secret_santa.assign_santa(secret_santa.open)))
-# secret_santa.shuffle_list(secret_santa.refine_pairs(secret_santa.assign_santa(secret_santa.open)))
-
