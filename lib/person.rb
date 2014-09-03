@@ -15,7 +15,7 @@ class Person
 		  @last != potential.last
 	end
 
-	def not_assigned(potential)
-			potential.assigned_santa == nil
+	def not_self(potential)
+		 @first != potential.first
 	end
 end
