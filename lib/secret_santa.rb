@@ -9,9 +9,9 @@ class SecretSanta
 		@santa_shuffled = santa_shuffled
 	end
 
-	def people_list
+	def get_people_list(list)
 		people_list = []
-		csv_data = CSV.foreach('./lib/example.csv') do |row|
+		csv_data = CSV.foreach(list) do |row|
 			@people = Person.new(row) 
 			people_list << @people
 		end
@@ -52,7 +52,6 @@ class SecretSanta
 	end
 		
 	def assign_correct_santa(random_list)
-    santa_shuffled = @santa_shuffled.clone
 			random_list.each do |person|
 			  potential = random_list.select{ |other_person| person.assigned_santa.legit_santa(other_person) && 
 																		  other_person.assigned_santa.legit_santa(person) }
@@ -63,6 +62,7 @@ class SecretSanta
 				  other_person.assigned_santa = to_swap
 			  end
 		  end
+    random_list
 	end
 
 	def print_assigned(correct_list)

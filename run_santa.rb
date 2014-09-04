@@ -2,7 +2,7 @@ require './lib/person.rb'
 require './lib/secret_santa.rb'
 
 santa = SecretSanta.new
-santa.people_list
+santa.get_people_list('./lib/example.csv')
 santa.random_list
 
 unless santa.how_many_families?(santa.get_family_members)

@@ -1,7 +1,7 @@
 require_relative 'secret_santa.rb'
 
 class Person
-	attr_reader :first, :last, :email
+	attr_accessor :first, :last, :email
 	attr_accessor :assigned_santa
 
 	def initialize(list)
