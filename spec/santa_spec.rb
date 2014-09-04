@@ -26,9 +26,7 @@ describe SecretSanta do
 
 	it "returns boolean based on the number of families in the list" do
 		list_length = 4
-		family_members = []
-		allow(secret_santa).to receive(:get_family_members).and_return([{}])
-
+		allow(secret_santa).to receive(:get_family_members).and_return([])
 		expect(@secret_santa.how_many_families).to be false
 	end
 	
