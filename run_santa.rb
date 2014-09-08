@@ -2,10 +2,5 @@ require './lib/person.rb'
 require './lib/secret_santa.rb'
 
 santa = SecretSanta.new
-santa.get_people_list('./lib/example.csv')
-santa.random_list
+santa.play!('./lib/example.csv')
 
-unless santa.how_many_families?(santa.get_family_members)
-	  santa.print_assigned(santa.assign_correct_santa(santa.assign_random_santa))
-end
-santa.print_error(santa.how_many_families?(santa.get_family_members))

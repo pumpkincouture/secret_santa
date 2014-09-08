@@ -8,7 +8,7 @@ class Person
 		  @first = list[0]
 		  @last = list[1]
 		  @email = list[2]
-		  @assigned_santa = assigned_santa
+		  # @assigned_santa = assigned_santa
 	end
 
 	def legit_santa(potential)
