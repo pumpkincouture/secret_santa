@@ -13,11 +13,11 @@ class Person
 	end
 
 	def legit_santa(potential)
-		  @last != potential.last
+		@last != potential.last
 	end
 
 	def not_self(potential)
-		 @first != potential.first
+		@first != potential.first
 	end
 
 	def print_assigned(correct_list)
