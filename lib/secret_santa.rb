@@ -1,5 +1,6 @@
 require 'csv'
 require_relative 'person'
+require_relative 'find_santas'
 
 
 class SecretSanta
