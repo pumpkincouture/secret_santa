@@ -19,4 +19,10 @@ class Person
 	def not_self(potential)
 		 @first != potential.first
 	end
+
+	def print_assigned(correct_list)
+		correct_list.each do |person|
+		  p person.first + " " + person.last + ", " + person.assigned_santa.first + " " + person.assigned_santa.last
+		end
+	end
 end
