@@ -8,7 +8,7 @@ class Person
 		  @email = list[2]
 	end
 
-	def swap_santa(person, other_person)
+	def swap_santa?(person, other_person)
 	  person.assigned_santa.legit_santa(other_person) && other_person.assigned_santa.legit_santa(person)
 	end
 
@@ -20,9 +20,7 @@ class Person
 		@first != potential.first
 	end
 
-	def print_assigned(correct_list)
-		correct_list.each do |person|
-		  p person.first + " " + person.last + ", " + person.assigned_santa.first + " " + person.assigned_santa.last
-		end
+	def print_assigned
+		@first + " " + @last + ", " + @assigned_santa.first + " " + @assigned_santa.last 
 	end
 end
